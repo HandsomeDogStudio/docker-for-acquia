@@ -41,7 +41,7 @@ If you wish to export your db, run the following comamand:
 
 It will be placed in the ./mysql-dump folder, but do not commit it to the repository.
 
-Default site credentials: user: SVI-admin, pass: password
+Default site credentials: user: docker-for-acquia, pass: password
 
 ### Configure PHPStorm for debugging
 
