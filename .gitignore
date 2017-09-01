@@ -1,0 +1,14 @@
+# Ignore the drupal project - this repo is for docker structure only
+repo
+
+# Ignore paths that contain user-generated content.
+repo/docroot/files
+repo/docroot/sites/*/files
+repo/docroot/sites/*/private
+.idea/*
+*.DS_Store
+repo/docroot/sites/default/settings.local.php
+/mysql-data
+
+# don't version control the production database
+mysql-dump/default.sql

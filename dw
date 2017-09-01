@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+docker-bash finishline_web_1
