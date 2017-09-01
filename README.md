@@ -5,16 +5,16 @@
 - Docker Toolbox
 - Git
 - Entry in /etc/hosts pointing docker.vm at 192.168.99.100
-- Creation of a docker-bash file as outlined here:
 
 ### Get the project running
 
 1. Clone this repository to a local directory under your home directory
-2. Copy /app/config/settings.local.php to /repo/docroot/sites/default
-2. Open "Docker Quickstart Terminal" to start the Docker Machine
-3. Using the Docker Machine shell "cd" into your project directory root from step 1
-4. Type "docker-compose up -d" to start the configured containers
-5. Assuming the IP address of your VM is 192.168.99.100 (default for Docker Toolbox) then you should be able to access
+2. Create the /repo directory and clone your Acquia project into it (so that directory /repo/docroot exists and contains the Drupal docroot files)
+3. Copy /app/config/settings.local.php to /repo/docroot/sites/default
+4. Open "Docker Quickstart Terminal" to start the Docker Machine
+5. Using the Docker Machine shell "cd" into your project directory root from step 1
+6. Type "docker-compose up -d" to start the configured containers
+7. Assuming the IP address of your VM is 192.168.99.100 (default for Docker Toolbox) then you should be able to access
 the site using this IP in your browser
 
 ### Initial setup
@@ -31,7 +31,6 @@ canonical DB in with the following commands:
     docker exec -it svi_mysql_1 bash
     mysql -uroot -ppassword drupal < /var/lib/mysql-dump/default.sql
     mysql -uroot -ppassword drupal < /var/lib/mysql-dump/scrub.sql
-    
 
 Once your site is up and running, killing and starting the containers will not remove any data and files. Only on fresh
 install, or the import of another db will you need to do the steps above.
@@ -74,17 +73,12 @@ Please follow the Github Flow workflow for all feature development. Checkins dir
 
 Inside the container, if the sites/default directory looks like this:
 
->drwxr-xr-x 1 1000 staff 102 Sep 14 13:39 config
-
->-rw-r--r-- 1 1000 staff 24427 Mar 17 17:20 default.settings.php
-
->drwxrwxrwx 1 1000 staff 510 Sep 14 14:55 files
-
->drwxr-xr-x 1 1000 staff 68 Sep 14 14:16 files-private
-
->-rw-r--r-- 1 1000 staff 756 Mar 17 17:20 local.db.inc
-
->-rw-r--r-- 1 1000 staff 6095 Sep 14 13:39 settings.php
+    drwxr-xr-x 1 1000 staff 102 Sep 14 13:39 config
+    -rw-r--r-- 1 1000 staff 24427 Mar 17 17:20 default.settings.php
+    drwxrwxrwx 1 1000 staff 510 Sep 14 14:55 files
+    drwxr-xr-x 1 1000 staff 68 Sep 14 14:16 files-private
+    -rw-r--r-- 1 1000 staff 756 Mar 17 17:20 local.db.inc
+    -rw-r--r-- 1 1000 staff 6095 Sep 14 13:39 settings.php
 
 It's because Drupal is running as www-data; as such it cannot write to the files (and/or in this case, the files-private) directories.
 
@@ -96,34 +90,28 @@ STEP-BY-STEP GUIDE
 
 1. Modify the user within the container
 
-     >usermod -u 1000 www-data
+     usermod -u 1000 www-data
 
 2. It's necessary to restart Apache in order for this change to take effect - but the act of stopping Apache stops the container from running; you'll be popped back out to your Mac command line when you execute:
 
-     >service apache2 restart
+     service apache2 restart
 
 3. Start your container again:
 
-     >docker-compose up -d
+     docker-compose up -d
 
 RESULT
 
 Now if you ls -l your project's sites/default folder, you'll see:
 
->drwxr-xr-x 1 www-data staff 102 Sep 14 13:39 config
-
->-rw-r--r-- 1 www-data staff 24427 Mar 17 17:20 default.settings.php
-
->drwxrwxrwx 1 www-data staff 510 Sep 14 14:55 files
-
->drwxr-xr-x 1 www-data staff 68 Sep 14 14:16 files-private
-
->-rw-r--r-- 1 www-data staff 756 Mar 17 17:20 local.db.inc
-
->-rw-r--r-- 1 www-data staff 6095 Sep 14 13:39 settings.php
+    drwxr-xr-x 1 www-data staff 102 Sep 14 13:39 config
+    -rw-r--r-- 1 www-data staff 24427 Mar 17 17:20 default.settings.php
+    drwxrwxrwx 1 www-data staff 510 Sep 14 14:55 files
+    drwxr-xr-x 1 www-data staff 68 Sep 14 14:16 files-private
+    -rw-r--r-- 1 www-data staff 756 Mar 17 17:20 local.db.inc
+    -rw-r--r-- 1 www-data staff 6095 Sep 14 13:39 settings.php
 
 And Drupal will have permission to write its files.
-
 ### If the theme is borked on your local dev environment
 
 Check to see what the database has set for the temporary files directory (execute either in the mysql container or via drush sqlc / sqlq in the web container):
