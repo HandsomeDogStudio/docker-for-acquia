@@ -84,7 +84,7 @@ It's because Drupal is running as www-data; as such it cannot write to the files
 
 The container's user cannot make any changes to these ownership settings (e.g. "chown -R www-data:www-data files" has no effect.)
 
-A solution[on github](https://github.com/boot2docker/boot2docker/issues/587#issuecomment-114868208 "boot2docker on github") is to change the user within the container:
+A solution [on github](https://github.com/boot2docker/boot2docker/issues/587#issuecomment-114868208 "boot2docker on github") is to change the user within the container:
 
 STEP-BY-STEP GUIDE
 
